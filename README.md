@@ -5,7 +5,7 @@
 Debian is a free operating system (OS) for your computer. An operating system is
 the set of basic programs and utilities that make your computer run.
 
-https://www.debian.org/
+(debian.org)[https://www.debian.org/]
 
 ## Description
 

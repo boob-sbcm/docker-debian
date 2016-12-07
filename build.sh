@@ -54,7 +54,7 @@ function docker_debootstrap()
     # variables
     image="/tmp/image-${distname}-${arch}"
     include="apt-transport-https,apt-utils,ca-certificates,curl,git,locales"
-    exclude="debconf-i18n,dmsetup,git-man,info,man-db,manpages"
+    exclude="debconf-i18n,git-man,info,man-db,manpages"
     components='main contrib non-free'
 
     echo "-- debootstrap ${distname}" 1>&3
