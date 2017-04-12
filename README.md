@@ -2,8 +2,8 @@
 
 ## Overview
 
-Debian is a free operating system (OS) for your computer. An operating system is
-the set of basic programs and utilities that make your computer run.
+Debian is a  free operating system (OS) for your  computer. An operating system
+is the set of basic programs and utilities that make your computer run.
 
 [debian.org](https://www.debian.org/)
 
@@ -11,7 +11,7 @@ the set of basic programs and utilities that make your computer run.
 
 Use this script to build your own base system.
 
-We've included the  last ca-certificates files in the repository  to ensure that
+We've included the last ca-certificates files  in the repository to ensure that
 all of our images are accurates.
 
 ## Tags
@@ -54,9 +54,9 @@ $ docker login
 
 ## Usage
 
-You first need  to choose which dist between lenny  (5.0), squeeze (6.0), wheezy
-(7.0), jessie (8.0) and stretch (9.0) you want (jessie will be the 'latest' tag)
-and you need to choose you user (or organization) name on Docker Hub.
+You first need to choose which  dist between lenny (5.0), squeeze (6.0), wheezy
+(7.0), jessie  (8.0) and stretch  (9.0) you want  (jessie will be  the 'latest'
+tag) and you need to choose you user (or organization) name on Docker Hub.
 
 Show help.
 
