@@ -17,9 +17,9 @@
 PATH='/usr/sbin:/usr/bin:/sbin:/bin'
 
 arch='amd64'
-oldstable='wheezy'
-stable='jessie'
-testing='stretch'
+oldstable='jessie'
+stable='stretch'
+testing='buster'
 version='4.0'
 
 function usage()
@@ -34,7 +34,7 @@ USAGE:
 
 OPTIONS:
    -h, --help           Show help
-   -d, --dist		Choose Debian distribution (lenny, squeeze, wheezy, jessie, stretch, sid)
+   -d, --dist		Choose Debian distribution (lenny, squeeze, wheezy, jessie, stretch, buster, sid)
    -m, --mirror		Choose your preferred mirror (default: ftp.debian.org)
    -t, --timezone       Choose your preferred timezone (default: Europe/Amsterdam)
    -u, --user		Docker Hub username or organisation (default: $USER)
@@ -410,9 +410,15 @@ then
 	    distid='9'
 	    include='gnupg2'
 	    ;;
+	buster|10|10.0)
+	    distname='buster'
+	    distid='10'
+	    include='gnupg2'
+	    ;;
 	sid)
 	    distname='sid'
 	    distid='sid'
+	    include='gnupg2'
 	    ;;
 	*)
 	    usage
