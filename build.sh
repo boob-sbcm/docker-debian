@@ -53,8 +53,8 @@ function docker_debootstrap()
 {
     # variables
     image="/tmp/image-${distname}-${arch}"
-    include="apt-transport-https,apt-utils,ca-certificates,curl,git,locales"
-    exclude="debconf-i18n,git-man,info,man-db,manpages"
+    include="${include} apt-transport-https,apt-utils,ca-certificates,curl,git,locales"
+    exclude='debconf-i18n,git-man,info,man-db,manpages'
     components='main contrib non-free'
 
     echo "-- debootstrap ${distname}" 1>&3
@@ -408,6 +408,7 @@ then
 	stretch|9|9.0)
 	    distname='stretch'
 	    distid='9'
+	    include='gnupg2'
 	    ;;
 	sid)
 	    distname='sid'
