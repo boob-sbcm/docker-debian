@@ -1,4 +1,4 @@
-# docker-debian ![License badge][license-img] [![Build Status][build-img]][build-url] [![Docker badge][docker-img]][docker-url]
+# docker-debian ![License][license-img] [![Build][build-img]][build-url] [![Docker][docker-img]][docker-url]
 
 ## Overview
 
