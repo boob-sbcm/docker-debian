@@ -20,9 +20,9 @@ Supported tags.
 
 - 5, lenny
 - 6, squeeze
-- 7, wheezy, oldstable
-- 8, jessie, stable, latest
-- 9, stretch, testing
+- 7, wheezy
+- 8, jessie, oldstable
+- 9, stretch, stable, latest
 - sid
 
 ## Requirements
@@ -55,7 +55,7 @@ $ docker login
 ## Usage
 
 You first need to choose which  dist between lenny (5.0), squeeze (6.0), wheezy
-(7.0), jessie  (8.0) and stretch  (9.0) you want  (jessie will be  the 'latest'
+(7.0), jessie  (8.0) and stretch (9.0)  you want (stretch will  be the 'latest'
 tag) and you need to choose you user (or organization) name on Docker Hub.
 
 Show help.

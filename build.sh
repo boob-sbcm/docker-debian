@@ -39,7 +39,7 @@ OPTIONS:
    -t, --timezone       Choose your preferred timezone (default: Europe/Amsterdam)
    -u, --user		Docker Hub username or organisation (default: $USER)
    -p, --push		Docker Hub push
-   -l, --latest         Force the "latest" (default: jessie)
+   -l, --latest         Force the "latest" (default: stretch)
    -v, --verbose	Verbose mode
    -V, --version        Show version
 
@@ -451,7 +451,7 @@ fi
 # -l / --latest
 if [ -z "${latest}" ]
 then
-    latest='jessie'
+    latest='stretch'
 fi
 
 # -v / --verbose
