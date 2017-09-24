@@ -168,7 +168,7 @@ EOF
 
 	# create /etc/apt/sources.list.d/security.list
 	echo ' * /etc/apt/sources.list.d/security.list' 1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/security.list" 
+	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/security.list"
 deb http://security.debian.org/ ${distname}/updates ${components}
 EOF
 
