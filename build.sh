@@ -160,11 +160,14 @@ deb http://${mirror}/debian ${distname} ${components}
 deb http://${mirror}/debian ${distname}-updates ${components}
 EOF
 
-	# create /etc/apt/sources.list.d/backports.list
-	echo ' * /etc/apt/sources.list.d/backports.list' 1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/backports.list"
+	if [ "${distname}" != 'buster' ]
+	then
+	    # create /etc/apt/sources.list.d/backports.list
+	    echo ' * /etc/apt/sources.list.d/backports.list' 1>&3
+	    cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/backports.list"
 deb http://${mirror}/debian ${distname}-backports ${components}
 EOF
+	fi
 
 	# create /etc/apt/sources.list.d/security.list
 	echo ' * /etc/apt/sources.list.d/security.list' 1>&3
