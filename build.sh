@@ -34,7 +34,7 @@ USAGE:
 
 OPTIONS:
    -h, --help           Show help
-   -d, --dist		Choose Debian distribution (lenny, squeeze, wheezy, jessie, stretch, buster, sid)
+   -d, --dist		Choose Debian distribution (lenny, squeeze, wheezy, jessie, stretch, buster)
    -m, --mirror		Choose your preferred mirror (default: ftp.debian.org)
    -t, --timezone       Choose your preferred timezone (default: Europe/Amsterdam)
    -u, --user		Docker Hub username or organisation (default: $USER)
