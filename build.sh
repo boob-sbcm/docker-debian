@@ -240,6 +240,9 @@ find /usr/share/locale  -type f -delete
 find /usr/share/man     -type f -delete
 find /var/cache/apt     -type f -delete
 find /var/lib/apt/lists -type f -delete
+apt-get autoclean -qq -y
+apt-get autoremove -qq -y
+apt-get clean -qq -y
 # EOF
 EOF
     ${sudo} chmod 755 "${image}/usr/bin/apt-clean"
@@ -263,9 +266,9 @@ EOF
 	     apt-get update -qq && \
              apt-get upgrade -qq -y && \
              apt-get dist-upgrade -qq -y && \
-             apt-get clean -qq -y && \
+             apt-get autoclean -qq -y && \
              apt-get autoremove -qq -y && \
-             apt-get autoclean -qq -y"
+             apt-get clean -qq -y"
 
     # unmount
     ${sudo} umount "${image}/dev/pts"
