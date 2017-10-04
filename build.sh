@@ -96,10 +96,10 @@ function docker_debootstrap()
     # create /etc/default/locale
     echo ' * /etc/default/locale' 1>&3
     cat <<EOF | ${sudo} tee "${image}/etc/default/locale"
-LANG=C
-LANGUAGE=C
-LC_COLLATE=C
-LC_ALL=C
+LANG=en_US.UTF-8
+LANGUAGE=en_US.UTF-8
+LC_COLLATE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
 EOF
 
     # create /etc/timezone
@@ -261,7 +261,7 @@ EOF
     echo ' * apt-get upgrade' 1>&3
     ${sudo} chroot "${image}" bash -c \
 	    "export DEBIAN_FRONTEND=noninteractive && \
-             export LC_ALL=C && \
+             export LC_ALL=en_US.UTF-8 && \
              update-ca-certificates -f && \
 	     apt-get update -qq && \
              apt-get upgrade -qq -y && \
