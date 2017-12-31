@@ -1,18 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2016, rockyluke
-#
-# Permission  to use,  copy, modify,  and/or  distribute this  software for  any
-# purpose  with  or without  fee  is hereby  granted,  provided  that the  above
-# copyright notice and this permission notice appear in all copies.
-#
-# THE SOFTWARE IS PROVIDED "AS IS"  AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-# REGARD TO  THIS SOFTWARE INCLUDING  ALL IMPLIED WARRANTIES  OF MERCHANTABILITY
-# AND FITNESS.  IN NO EVENT SHALL  THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-# INDIRECT, OR  CONSEQUENTIAL DAMAGES OR  ANY DAMAGES WHATSOEVER  RESULTING FROM
-# LOSS OF USE, DATA OR PROFITS,  WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-# OTHER  TORTIOUS ACTION,  ARISING  OUT OF  OR  IN CONNECTION  WITH  THE USE  OR
-# PERFORMANCE OF THIS SOFTWARE.
+set -e
 
 PATH='/usr/sbin:/usr/bin:/sbin:/bin'
 
@@ -34,13 +22,27 @@ USAGE:
 
 OPTIONS:
    -h, --help           Show help
-   -d, --dist		Choose Debian distribution (lenny, squeeze, wheezy, jessie, stretch, buster)
-   -m, --mirror		Choose your preferred mirror (default: ftp.debian.org)
-   -t, --timezone       Choose your preferred timezone (default: Europe/Amsterdam)
-   -u, --user		Docker Hub username or organisation (default: $USER)
-   -p, --push		Docker Hub push
-   -l, --latest         Force the "latest" (default: stretch)
-   -v, --verbose	Verbose mode
+
+   -d, --dist           Choose Debian distribution
+                        eg: lenny, squeeze, wheezy, jessie, stretch, buster
+
+   -m, --mirror         Choose your preferred mirror
+                        default: ftp.debian.org
+
+   -t, --timezone       Choose your preferred timezone
+                        default: Europe/Amsterdam
+
+   -u, --user           Docker Hub username or organisation
+                        default: $USER
+
+   -p, --push           Docker Hub push
+                        default: no
+
+   -l, --latest         Force the "latest"
+                        default: stretch
+
+   -v, --verbose        Verbose mode
+
    -V, --version        Show version
 
 VERSION:
@@ -61,13 +63,13 @@ function docker_debootstrap()
 
     if [ "$(id -u)" -ne 0 ]
     then
-	sudo='sudo'
+        sudo='sudo'
     fi
 
     # clean old image
     if [ -d "/tmp/image-${distname}-${arch}" ]
     then
-	${sudo} rm -fr "${image}"
+        ${sudo} rm -fr "${image}"
     fi
 
     # create minimal debootstrap image
@@ -78,19 +80,19 @@ function docker_debootstrap()
         echo "2.) run sudo ln -s sid /usr/share/debootstrap/scripts/${distname}" 1>&3
         exit 1
     else
-	${sudo} debootstrap \
-		--arch="${arch}" \
-		--include="${include}" \
-		--exclude="${exclude}" \
-		--variant=minbase \
-		"${distname}" \
-		"${image}" \
-		"http://${mirror}/debian"
-	if [ ${?} -ne 0 ]
-	then
+        ${sudo} debootstrap \
+                --arch="${arch}" \
+                --include="${include}" \
+                --exclude="${exclude}" \
+                --variant=minbase \
+                "${distname}" \
+                "${image}" \
+                "http://${mirror}/debian"
+        if [ ${?} -ne 0 ]
+        then
             echo "/!\ There is an issue with debootstrap, please run again with -v (verbose)." 1>&3
             exit 1
-	fi
+        fi
     fi
 
     # create /etc/default/locale
@@ -118,16 +120,16 @@ EOF
     if [ "${distname}" = 'lenny' ]
     then
 
-	# create /etc/apt/sources.list
-	echo ' * /etc/apt/sources.list' 1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list"
+        # create /etc/apt/sources.list
+        echo ' * /etc/apt/sources.list' 1>&3
+        cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list"
 deb http://archive.debian.org/debian lenny main contrib non-free
 deb http://archive.debian.org/debian-backports lenny-backports main contrib non-free
 EOF
 
-	# create /etc/apt/apt.conf.d/90ignore-release-date
+        # create /etc/apt/apt.conf.d/90ignore-release-date
 	# thanks to http://stackoverflow.com/questions/36080756/archive-repository-for-debian-squeeze
-	echo ' * /etc/apt/apt.conf.d/ignore-release-date' 1>&3
+        echo ' * /etc/apt/apt.conf.d/ignore-release-date' 1>&3
 	cat <<EOF | ${sudo} tee "${image}/etc/apt/apt.conf.d/ignore-release-date"
 Acquire::Check-Valid-Until "false";
 EOF
@@ -135,50 +137,50 @@ EOF
     elif [ "${distname}" = 'squeeze' ]
     then
 
-	# create /etc/apt/sources.list
-	echo ' * /etc/apt/sources.list' 1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list"
+        # create /etc/apt/sources.list
+        echo ' * /etc/apt/sources.list' 1>&3
+        cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list"
 deb http://archive.debian.org/debian squeeze main contrib non-free
 deb http://archive.debian.org/debian squeeze-lts main contrib non-free
 deb http://archive.debian.org/debian-backports squeeze-backports main contrib non-free
 deb http://archive.debian.org/debian-backports squeeze-backports-sloppy main contrib non-free
 EOF
 
-	# create /etc/apt/apt.conf.d/90ignore-release-date
+        # create /etc/apt/apt.conf.d/90ignore-release-date
 	# thanks to http://stackoverflow.com/questions/36080756/archive-repository-for-debian-squeeze
-	echo ' * /etc/apt/apt.conf.d/ignore-release-date' 1>&3
+        echo ' * /etc/apt/apt.conf.d/ignore-release-date' 1>&3
 	cat <<EOF | ${sudo} tee "${image}/etc/apt/apt.conf.d/ignore-release-date"
 Acquire::Check-Valid-Until "false";
 EOF
 
     else
 
-	# create /etc/apt/sources.list
-	echo ' * /etc/apt/sources.list' 1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list"
+        # create /etc/apt/sources.list
+        echo ' * /etc/apt/sources.list' 1>&3
+        cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list"
 deb http://${mirror}/debian ${distname} ${components}
 deb http://${mirror}/debian ${distname}-updates ${components}
 EOF
 
-	if [ "${distname}" != 'buster' ]
-	then
-	    # create /etc/apt/sources.list.d/backports.list
-	    echo ' * /etc/apt/sources.list.d/backports.list' 1>&3
+        if [ "${distname}" != 'buster' ]
+        then
+            # create /etc/apt/sources.list.d/backports.list
+            echo ' * /etc/apt/sources.list.d/backports.list' 1>&3
 	    cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/backports.list"
 deb http://${mirror}/debian ${distname}-backports ${components}
 EOF
-	fi
+        fi
 
-	# create /etc/apt/sources.list.d/security.list
-	echo ' * /etc/apt/sources.list.d/security.list' 1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/security.list"
+        # create /etc/apt/sources.list.d/security.list
+        echo ' * /etc/apt/sources.list.d/security.list' 1>&3
+        cat <<EOF | ${sudo} tee "${image}/etc/apt/sources.list.d/security.list"
 deb http://security.debian.org/ ${distname}/updates ${components}
 EOF
 
-	# create /etc/dpkg/dpkg.cfg.d/disable-doc
+        # create /etc/dpkg/dpkg.cfg.d/disable-doc
 	# thanks to http://askubuntu.com/questions/129566/remove-documentation-to-save-hard-drive-space
-	echo ' * /etc/dpkg/dpkg.cfg.d/disable-doc'  1>&3
-	cat <<EOF | ${sudo} tee "${image}/etc/dpkg/dpkg.cfg.d/disable-doc"
+        echo ' * /etc/dpkg/dpkg.cfg.d/disable-doc'  1>&3
+        cat <<EOF | ${sudo} tee "${image}/etc/dpkg/dpkg.cfg.d/disable-doc"
 path-exclude /usr/share/doc/*
 path-include /usr/share/doc/*/copyright
 path-exclude /usr/share/info/*
@@ -260,10 +262,10 @@ EOF
     # upgrade (without output...)
     echo ' * apt-get upgrade' 1>&3
     ${sudo} chroot "${image}" bash -c \
-	    "export DEBIAN_FRONTEND=noninteractive && \
+            "export DEBIAN_FRONTEND=noninteractive && \
              export LC_ALL=en_US.UTF-8 && \
              update-ca-certificates -f && \
-	     apt-get update -qq && \
+             apt-get update -qq && \
              apt-get upgrade -qq -y && \
              apt-get dist-upgrade -qq -y && \
              apt-get autoclean -qq -y && \
@@ -287,7 +289,7 @@ EOF
     # create archive
     if [ -f "${image}.tar" ]
     then
-	${sudo} rm "${image}.tar"
+        ${sudo} rm "${image}.tar"
     fi
     ${sudo} tar --numeric-owner -cf "${image}.tar" -C "${image}" .
 }
@@ -303,11 +305,11 @@ function docker_import()
 
     for import in latest oldstable stable testing
     do
-	if [ "${distname}" = "${!import}" ]
-	then
-	    docker tag "${user}/debian:${distname}" "${user}/debian:${import}"
+        if [ "${distname}" = "${!import}" ]
+        then
+            docker tag "${user}/debian:${distname}" "${user}/debian:${import}"
 	    docker run "${user}/debian:${import}" echo "Successfully build ${user}/debian:${import}" 1>&3
-	fi
+        fi
     done
 }
 
@@ -321,11 +323,11 @@ function docker_push()
 
     for push in latest oldstable stable testing
     do
-	if [ "${distname}" = "${!push}"  ]
-	then
-	    echo "-- docker push ${push}" 1>&3
-	    docker push "${user}/debian:${push}"
-	fi
+        if [ "${distname}" = "${!push}"  ]
+        then
+            echo "-- docker push ${push}" 1>&3
+            docker push "${user}/debian:${push}"
+        fi
     done
 }
 
